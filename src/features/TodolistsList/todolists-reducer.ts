@@ -31,6 +31,9 @@ export const slice = createSlice({
         },
         setTodolistsAC(state, action: PayloadAction<{ todolists: Array<TodolistType> }>) {
             return action.payload.todolists.map(tl => ({...tl, filter: 'all', entityStatus: 'idle'}))
+        },
+        clearTodolists() {
+            return []
         }
     }
 })
@@ -41,7 +44,8 @@ export const {
     changeTodolistTitleAC,
     changeTodolistFilterAC,
     changeTodolistEntityStatusAC,
-    setTodolistsAC
+    setTodolistsAC,
+    clearTodolists
 } = slice.actions
 
 // thunks
