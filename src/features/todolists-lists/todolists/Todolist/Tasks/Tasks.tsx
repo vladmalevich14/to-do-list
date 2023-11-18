@@ -1,15 +1,16 @@
-import {Task} from "features/todolist-list/tasks/ui/task/task";
-import React, {FC} from "react";
+import React, {FC, memo} from "react";
+import {Task} from "features/todolists-lists/todolists/Todolist/Tasks/Task/Task";
+import {TodolistDomainType} from "features/todolists-lists/todolists/todolists.reducer";
 import {TaskStatuses} from "common/enums";
-import {TaskType} from "features/todolist-list/tasks/api/tasks.api.types";
-import {TodolistDomainType} from "features/todolist-list/todolists/model/todolists.reducer";
+import {TaskType} from "features/todolists-lists/tasks/tasks.api";
 
 type PropsType = {
-    tasks: TaskType[]
-    todolist: TodolistDomainType
-}
+    todolist: TodolistDomainType;
+    tasks: TaskType[];
+};
 
-export const Tasks: FC<PropsType> = ({tasks, todolist}) => {
+export const Tasks: FC<PropsType> = memo(function ({todolist, tasks}) {
+
     let tasksForTodolist = tasks;
 
     if (todolist.filter === "active") {
@@ -19,7 +20,8 @@ export const Tasks: FC<PropsType> = ({tasks, todolist}) => {
         tasksForTodolist = tasks.filter((t) => t.status === TaskStatuses.Completed);
     }
 
-    return <div>
+    return (
+        <div>
             {tasksForTodolist.map((t) => (
                 <Task
                     key={t.id}
@@ -28,4 +30,5 @@ export const Tasks: FC<PropsType> = ({tasks, todolist}) => {
                 />
             ))}
         </div>
-}
+    );
+});

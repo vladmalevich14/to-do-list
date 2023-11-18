@@ -1,14 +1,17 @@
-import {Route, Routes} from "react-router-dom";
-import {TodolistsList} from "features/todolist-list/todolistsList";
-import {Login} from "features/auth/login/login";
-import {Container} from "@mui/material";
 import React from "react";
+import {Route, Routes} from "react-router-dom";
+import {Container,} from "@mui/material";
+import {Login} from "features/auth/ui/login/login";
+import {TodolistsList} from "features/todolists-lists/TodolistsList";
+
 
 export const Routing = () => {
-    return <Container fixed>
-        <Routes>
-            <Route path={"/"} element={<TodolistsList/>}/>
-            <Route path={"/login"} element={<Login/>}/>
-        </Routes>
-    </Container>
+    return (
+                <Container fixed>
+                    <Routes>
+                        <Route path={"/"} element={<TodolistsList />} />
+                        <Route path={"/login"} element={<Login />} />
+                    </Routes>
+                </Container>
+    );
 }

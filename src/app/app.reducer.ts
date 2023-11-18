@@ -20,29 +20,33 @@ const slice = createSlice({
             state.isInitialized = action.payload.isInitialized;
         },
     },
-    extraReducers: (builder) => {
-        builder.addMatcher((action) => {
+    extraReducers: builder => {
+        builder.addMatcher(
+            (action) => {
                 return action.type.endsWith('/pending')
-            }, (state) => {
+            },
+            (state, action) => {
                 state.status = 'loading'
             })
-            .addMatcher((action)=>{
-                return action.type.endsWith('/rejected')
-            }, (state, action)=>{
-                state.status = 'failed'
-
-                const { payload, error } = action
-                if (payload) {
-                    if (payload.showGlobalError) {
-                        state.error = payload.data.messages.length ? payload.data.messages[0] : 'Some error occurred'
+            .addMatcher((action) => {
+                    return action.type.endsWith('/rejected')
+                },
+                (state, action) => {
+                    debugger
+                    state.status = 'failed'
+                    const {payload, error} = action
+                    if (payload) {
+                        if (payload.showGlobalError) {
+                            state.error = payload.data.messages.length ? payload.data.messages[0] : 'Some error occurred'
+                        }
+                    } else {
+                        state.error = error.message ? error.message : 'Some error occurred'
                     }
-                } else {
-                    state.error = error.message ? error.message : 'Some error occurred'
-                }
-            })
-            .addMatcher((action)=>{
+                })
+            .addMatcher((action) => {
                 return action.type.endsWith('/fulfilled')
-            }, (state)=>{
+            }, (state) => {
+                debugger
                 state.status = 'succeeded'
             })
     }
