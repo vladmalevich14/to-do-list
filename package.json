@@ -7,7 +7,7 @@
   },
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://task-manager.com",
+  "homepage": "https://vladmalevich14.github.io/to-do-list",
   "dependencies": {
     "@babel/runtime": "^7.21.0",
     "@emotion/react": "^11.10.6",
