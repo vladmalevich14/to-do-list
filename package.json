@@ -1,6 +1,6 @@
 {
   "name": "it-incubator-todolist-ts",
-  "homepage": "https://vladmalevich14.github.io/toDoList",
+  "homepage": "https://vladmalevich14.github.io/toDoList/",
   "jest": {
     "moduleNameMapper": {
       "axios": "axios/dist/node/axios.cjs"

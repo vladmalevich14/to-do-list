@@ -2,29 +2,35 @@ import { createSlice } from "@reduxjs/toolkit";
 import { appActions } from "app/app.reducer";
 import { authAPI, LoginParamsType } from "features/auth/api/auth.api";
 import { clearTasksAndTodolists } from "common/actions";
-import { createAppAsyncThunk } from "common/utils";
+import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError, thunkTryCatch } from "common/utils";
 import { ResultCode } from "common/enums";
 
 const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>("auth/login", async (arg, thunkAPI) => {
-  const { rejectWithValue } = thunkAPI;
+  const { dispatch, rejectWithValue } = thunkAPI;
+  return thunkTryCatch(thunkAPI, async () => {
     const res = await authAPI.login(arg);
     if (res.data.resultCode === ResultCode.Success) {
       return { isLoggedIn: true };
     } else {
       const isShowAppError = !res.data.fieldsErrors.length;
-      return rejectWithValue({data: res.data, showGlobalError: isShowAppError});
+      handleServerAppError(res.data, dispatch, isShowAppError);
+      return rejectWithValue(res.data);
     }
+  });
 });
 
 const logout = createAppAsyncThunk<{ isLoggedIn: boolean }, void>("auth/logout", async (_, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
+  return thunkTryCatch(thunkAPI, async () => {
     const res = await authAPI.logout();
     if (res.data.resultCode === ResultCode.Success) {
       dispatch(clearTasksAndTodolists());
       return { isLoggedIn: false };
     } else {
-      return rejectWithValue({data: res.data, showGlobalError: true});
+      handleServerAppError(res.data, dispatch);
+      return rejectWithValue(null);
     }
+  });
 });
 
 const initializeApp = createAppAsyncThunk<{ isLoggedIn: boolean }, void>("app/initializeApp", async (_, thunkAPI) => {
@@ -37,6 +43,7 @@ const initializeApp = createAppAsyncThunk<{ isLoggedIn: boolean }, void>("app/in
       return rejectWithValue(null);
     }
   } catch (e) {
+    handleServerNetworkError(e, dispatch);
     return rejectWithValue(null);
   } finally {
     dispatch(appActions.setAppInitialized({ isInitialized: true }));

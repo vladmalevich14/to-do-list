@@ -3,15 +3,10 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { BaseResponseType } from "common/types";
 
 /**
-Эта функция предназначена для того, чтобы избавиться от дублирования кода по созданию типов в санках
+Эта функция предназначена для того, чтобы избавиться от дублирования кода по созданию типов в санке
  */
 export const createAppAsyncThunk = createAsyncThunk.withTypes<{
   state: AppRootStateType;
   dispatch: AppDispatch;
-  rejectValue: null | RejectValueType;
+  rejectValue: null | BaseResponseType;
 }>();
-
-export type RejectValueType = {
-  data: BaseResponseType
-  showGlobalError: boolean
-}
